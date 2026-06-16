@@ -4,7 +4,7 @@
   "description": "Windows native Toast notifications for Claude Code. Zero dependencies, PowerShell + WinRT.",
   "type": "module",
   "bin": {
-    "claude-toast-notifier": "./bin/cli.mjs"
+    "claude-toast-notifier": "bin/cli.mjs"
   },
   "files": [
     "bin/",
