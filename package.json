@@ -1,0 +1,32 @@
+{
+  "name": "claude-toast-notifier",
+  "version": "1.0.0",
+  "description": "Windows native Toast notifications for Claude Code. Zero dependencies, PowerShell + WinRT.",
+  "type": "module",
+  "bin": {
+    "claude-toast-notifier": "./bin/cli.mjs"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "asset/"
+  ],
+  "keywords": [
+    "claude-code",
+    "claude",
+    "windows",
+    "toast",
+    "notification",
+    "powershell",
+    "hook"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a327969974/claude-toast-notifier.git"
+  },
+  "homepage": "https://github.com/a327969974/claude-toast-notifier#readme"
+}
