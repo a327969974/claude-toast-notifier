@@ -20,8 +20,8 @@ const SETTINGS_PATH = path.join(CLAUDE_DIR, 'settings.json');
 const TARGET_SCRIPT = path.join(CLAUDE_DIR, 'notify.ps1');
 const SOURCE_SCRIPT = path.resolve(__dirname, '..', 'asset', 'notify.ps1');
 
-// 我们写入 settings.json 的 hook command（bash 友好的 ~ 路径）
-const HOOK_COMMAND = 'powershell -NoProfile -ExecutionPolicy Bypass -File ~/.claude/notify.ps1';
+// 我们写入 settings.json 的 hook command（绝对路径，不依赖 ~ 展开）
+const HOOK_COMMAND = `powershell -NoProfile -ExecutionPolicy Bypass -File ${TARGET_SCRIPT.replace(/\\/g, '/')}`;
 const HOOK_EVENTS = ['Stop', 'Notification'];
 
 // 用于识别「我们添加的 hook」的匹配规则：command 末尾指向 notify.ps1 即视为我们的

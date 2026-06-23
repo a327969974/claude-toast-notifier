@@ -84,7 +84,7 @@ Copy-Item "notify.ps1" "$env:USERPROFILE\.claude\notify.ps1"
       {
         "matcher": "",
         "hooks": [
-          { "type": "command", "command": "powershell -NoProfile -ExecutionPolicy Bypass -File ~/.claude/notify.ps1" }
+          { "type": "command", "command": "powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/你的用户名/.claude/notify.ps1" }
         ]
       }
     ],
@@ -92,7 +92,7 @@ Copy-Item "notify.ps1" "$env:USERPROFILE\.claude\notify.ps1"
       {
         "matcher": "",
         "hooks": [
-          { "type": "command", "command": "powershell -NoProfile -ExecutionPolicy Bypass -File ~/.claude/notify.ps1" }
+          { "type": "command", "command": "powershell -NoProfile -ExecutionPolicy Bypass -File C:/Users/你的用户名/.claude/notify.ps1" }
         ]
       }
     ]
@@ -100,7 +100,7 @@ Copy-Item "notify.ps1" "$env:USERPROFILE\.claude\notify.ps1"
 }
 ```
 
-> ⚠️ 路径必须用 `~` 而非 `%USERPROFILE%`。Claude Code 在 Windows 上通过 Git Bash 执行 hook，`%USERPROFILE%` 不会被展开。
+> ⚠️ 路径必须用绝对路径（如 `C:/Users/你的用户名/.claude/notify.ps1`），`~` 和 `%USERPROFILE%` 在最新版 Claude Code 中可能不会被展开。
 
 ### 调试
 
@@ -131,7 +131,7 @@ notify.ps1 被调用
 
 | 问题 | 根因 | 解决方案 |
 |------|------|----------|
-| `%USERPROFILE%` 不生效 | Claude Code 用 Git Bash 执行 hook，不是 cmd.exe | 用 `~`（bash 原生展开） |
+| `~` 路径不生效 | Claude Code hook 未展开 `~`，PowerShell 收到字面值 | 用绝对路径（安装器自动使用 `os.homedir()` 拼接） |
 | emoji 导致弹窗崩溃 | PS 5.1 的 `[char]` 是 16 位，🔔(U+1F514) 超限 | 用 `[char]::ConvertFromUtf32()` |
 | Stop 事件不弹窗 | `[Console]::In` 按 GBK 读 UTF-8 中文 JSON，破坏结构 | 读前设 `[Console]::InputEncoding = UTF8` |
 
@@ -209,7 +209,7 @@ Three critical issues were solved during development:
 
 | Issue | Root Cause | Fix |
 |-------|-----------|-----|
-| `%USERPROFILE%` not working | Claude Code uses Git Bash for hooks, not cmd.exe | Use `~` (native bash expansion) |
+| `~` path not expanded | Claude Code hook passes `~` literally to PowerShell | Use absolute path (installer uses `os.homedir()`) |
 | Emoji crashes the script | PS 5.1 `[char]` is 16-bit; 🔔(U+1F514) overflows | Use `[char]::ConvertFromUtf32()` |
 | Stop event never fires | `[Console]::In` reads UTF-8 JSON as GBK, corrupting structure | Set `[Console]::InputEncoding = UTF8` before reading |
 
