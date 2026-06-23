@@ -1,4 +1,4 @@
-# Claude Code Toast Notifier
+﻿# Claude Code Toast Notifier
 # 在任务完成(Stop)或需要操作(Notification)时，Windows 右上角弹出原生 Toast。
 # 设计原则：零依赖、快速、永不阻塞、出错静默（绝不影响 Claude Code 主流程）。
 #

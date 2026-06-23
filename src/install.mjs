@@ -71,28 +71,32 @@ function writeSettings(data) {
   fs.writeFileSync(SETTINGS_PATH, JSON.stringify(data, null, 2) + '\n', 'utf8');
 }
 
-/** 把 notify.ps1 复制到 ~/.claude/notify.ps1 */
+/** 把 notify.ps1 复制到 ~/.claude/notify.ps1，确保带 UTF-8 BOM（PowerShell 5.1 需要 BOM） */
 function installScript() {
   if (!fs.existsSync(SOURCE_SCRIPT)) {
     throw new Error(`找不到包内脚本资产: ${SOURCE_SCRIPT}`);
   }
   fs.mkdirSync(CLAUDE_DIR, { recursive: true });
 
-  const sourceContent = fs.readFileSync(SOURCE_SCRIPT);
+  // 读源文件内容，确保有 UTF-8 BOM（Windows PowerShell 5.1 需要 BOM 才能正确解析中文注释）
+  let content = fs.readFileSync(SOURCE_SCRIPT, 'utf8');
+  if (content.charCodeAt(0) !== 0xFEFF) {
+    content = '\uFEFF' + content;
+  }
 
   if (fs.existsSync(TARGET_SCRIPT)) {
-    const existing = fs.readFileSync(TARGET_SCRIPT);
-    if (existing.equals(sourceContent)) {
+    const existing = fs.readFileSync(TARGET_SCRIPT, 'utf8');
+    if (existing === content) {
       log.info('通知脚本已存在且为最新，跳过复制');
       return;
     }
     // 内容不同，备份旧文件后覆盖
     const backup = TARGET_SCRIPT + '.bak';
-    fs.copyFileSync(TARGET_SCRIPT, backup);
+    fs.writeFileSync(backup, existing, 'utf8');
     log.warn(`检测到旧版脚本，已备份至 ${backup}`);
   }
 
-  fs.copyFileSync(SOURCE_SCRIPT, TARGET_SCRIPT);
+  fs.writeFileSync(TARGET_SCRIPT, content, 'utf8');
   log.ok('通知脚本已复制到 ~/.claude/notify.ps1');
 }
 
