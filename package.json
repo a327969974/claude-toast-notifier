@@ -1,6 +1,6 @@
 {
   "name": "claude-toast-notifier",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Windows native Toast notifications for Claude Code. Zero dependencies, PowerShell + WinRT.",
   "type": "module",
   "bin": {
