@@ -22,7 +22,19 @@ const SOURCE_SCRIPT = path.resolve(__dirname, '..', 'asset', 'notify.ps1');
 
 // 我们写入 settings.json 的 hook command（绝对路径，不依赖 ~ 展开）
 const HOOK_COMMAND = `powershell -NoProfile -ExecutionPolicy Bypass -File ${TARGET_SCRIPT.replace(/\\/g, '/')}`;
-const HOOK_EVENTS = ['Stop', 'Notification'];
+const HOOK_EVENTS = [
+  'Stop',              // 任务完成
+  'StopFailure',       // 任务因 API 错误中断
+  'Notification',      // 需要用户输入
+  'PermissionRequest', // 权限审批弹窗
+  'PermissionDenied',  // 操作被自动拒绝
+  'PostToolUseFailure',// 工具执行失败
+  'SubagentStop',      // 子 agent 完成
+  'TaskCompleted',     // 任务标记完成
+  'TeammateIdle',      // 团队队友空闲
+  'Elicitation',       // MCP 服务器需要用户输入
+  'SessionEnd',        // 会话结束
+];
 
 // 用于识别「我们添加的 hook」的匹配规则：command 末尾指向 notify.ps1 即视为我们的
 const OUR_HOOK_PATTERN = /notify\.ps1\s*$/;

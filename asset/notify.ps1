@@ -64,9 +64,54 @@ try {
             $body  = "Project: $projectName$shortId"
             break
         }
+        "StopFailure" {
+            $title = [string][char]::ConvertFromUtf32(0x274C) + " Claude Task Failed"
+            $body  = if ($message) { "Project: $projectName$shortId`n$message" } else { "Project: $projectName$shortId" }
+            break
+        }
         "Notification" {
             $title = [string][char]::ConvertFromUtf32(0x1F514) + " Claude Needs Your Input"
             $body  = if ($message) { "Project: $projectName$shortId`n$message" } else { "Project: $projectName$shortId" }
+            break
+        }
+        "PermissionRequest" {
+            $title = [string][char]::ConvertFromUtf32(0x1F512) + " Claude Permission Request"
+            $body  = if ($message) { "Project: $projectName$shortId`n$message" } else { "Project: $projectName$shortId" }
+            break
+        }
+        "PermissionDenied" {
+            $title = [string][char]::ConvertFromUtf32(0x26D4) + " Claude Permission Denied"
+            $body  = if ($message) { "Project: $projectName$shortId`n$message" } else { "Project: $projectName$shortId" }
+            break
+        }
+        "PostToolUseFailure" {
+            $title = [string][char]::ConvertFromUtf32(0x26A0) + " Claude Tool Failed"
+            $body  = if ($message) { "Project: $projectName$shortId`n$message" } else { "Project: $projectName$shortId" }
+            break
+        }
+        "SubagentStop" {
+            $title = [string][char]::ConvertFromUtf32(0x1F916) + " Claude Subagent Done"
+            $body  = "Project: $projectName$shortId"
+            break
+        }
+        "TaskCompleted" {
+            $title = [string][char]::ConvertFromUtf32(0x1F3AF) + " Claude Task Done"
+            $body  = "Project: $projectName$shortId"
+            break
+        }
+        "TeammateIdle" {
+            $title = [string][char]::ConvertFromUtf32(0x1F465) + " Claude Teammate Idle"
+            $body  = "Project: $projectName$shortId"
+            break
+        }
+        "Elicitation" {
+            $title = [string][char]::ConvertFromUtf32(0x2753) + " Claude MCP Input Needed"
+            $body  = if ($message) { "Project: $projectName$shortId`n$message" } else { "Project: $projectName$shortId" }
+            break
+        }
+        "SessionEnd" {
+            $title = [string][char]::ConvertFromUtf32(0x1F44B) + " Claude Session Ended"
+            $body  = "Project: $projectName$shortId"
             break
         }
         default {
